@@ -1,0 +1,101 @@
+orderId,customerEmail,item,quantity,unitPrice
+ORD-001,ALICE@EXAMPLE.COM,Keyboard,2,350000
+ORD-002,budi@example.com,Mouse,3,120000
+ORD-003,clara@example.com,USB-C Cable,5,45000
+ORD-004,dimas@example.com,Monitor,1,1750000
+ORD-005,eka@example.com,Laptop Stand,2,180000
+ORD-006,fajar@example.com,Webcam,1,650000
+ORD-007,gita@example.com,Headset,2,425000
+ORD-008,hadi@example.com,HDMI Cable,4,85000
+ORD-009,intan@example.com,SSD 512GB,1,820000
+ORD-010,joko@example.com,RAM 16GB,2,690000
+ORD-011,kirana@example.com,Keyboard,1,350000
+ORD-012,lukman@example.com,Mouse,2,120000
+ORD-013,maya@example.com,USB-C Cable,3,45000
+ORD-014,nanda@example.com,Monitor,2,1750000
+ORD-015,oki@example.com,Laptop Stand,1,180000
+ORD-016,putri@example.com,Webcam,2,650000
+ORD-017,qori@example.com,Headset,1,425000
+ORD-018,rama@example.com,HDMI Cable,5,85000
+ORD-019,sari@example.com,SSD 512GB,2,820000
+ORD-020,tio@example.com,RAM 16GB,1,690000
+ORD-021,umar@example.com,Keyboard,3,350000
+ORD-022,vina@example.com,Mouse,4,120000
+ORD-023,wahyu@example.com,USB-C Cable,6,45000
+ORD-024,xenia@example.com,Monitor,1,1750000
+ORD-025,yuda@example.com,Laptop Stand,2,180000
+ORD-026,zahra@example.com,Webcam,1,650000
+ORD-027,andi@example.com,Headset,3,425000
+ORD-028,bella@example.com,HDMI Cable,2,85000
+ORD-029,candra@example.com,SSD 512GB,1,820000
+ORD-030,dewi@example.com,RAM 16GB,2,690000
+ORD-031,erwin@example.com,Keyboard,1,350000
+ORD-032,fitri@example.com,Mouse,5,120000
+ORD-033,gilang@example.com,USB-C Cable,4,45000
+ORD-034,hana@example.com,Monitor,1,1750000
+ORD-035,irfan@example.com,Laptop Stand,3,180000
+ORD-036,jihan@example.com,Webcam,1,650000
+ORD-037,kevin@example.com,Headset,2,425000
+ORD-038,lina@example.com,HDMI Cable,6,85000
+ORD-039,mario@example.com,SSD 512GB,1,820000
+ORD-040,nisa@example.com,RAM 16GB,1,690000
+ORD-041,oscar@example.com,Keyboard,2,350000
+ORD-042,prita@example.com,Mouse,3,120000
+ORD-043,queen@example.com,USB-C Cable,5,45000
+ORD-044,rizky@example.com,Monitor,1,1750000
+ORD-045,sinta@example.com,Laptop Stand,2,180000
+ORD-046,tamara@example.com,Webcam,2,650000
+ORD-047,usman@example.com,Headset,1,425000
+ORD-048,verdi@example.com,HDMI Cable,4,85000
+ORD-049,winda@example.com,SSD 512GB,2,820000
+ORD-050,yusuf@example.com,RAM 16GB,1,690000
+ORD-051,zaki@example.com,Keyboard,1,350000
+ORD-052,amel@example.com,Mouse,2,120000
+ORD-053,bagas@example.com,USB-C Cable,3,45000
+ORD-054,citra@example.com,Monitor,2,1750000
+ORD-055,doni@example.com,Laptop Stand,1,180000
+ORD-056,elsa@example.com,Webcam,1,650000
+ORD-057,farah@example.com,Headset,2,425000
+ORD-058,galih@example.com,HDMI Cable,5,85000
+ORD-059,helmi@example.com,SSD 512GB,1,820000
+ORD-060,indah@example.com,RAM 16GB,2,690000
+ORD-061,jaka@example.com,Keyboard,2,350000
+ORD-062,karin@example.com,Mouse,4,120000
+ORD-063,leo@example.com,USB-C Cable,6,45000
+ORD-064,mila@example.com,Monitor,1,1750000
+ORD-065,niko@example.com,Laptop Stand,2,180000
+ORD-066,olivia@example.com,Webcam,1,650000
+ORD-067,pandu@example.com,Headset,3,425000
+ORD-068,qila@example.com,HDMI Cable,2,85000
+ORD-069,reno@example.com,SSD 512GB,2,820000
+ORD-070,salsa@example.com,RAM 16GB,1,690000
+ORD-071,tania@example.com,Keyboard,1,350000
+ORD-072,udin@example.com,Mouse,3,120000
+ORD-073,vito@example.com,USB-C Cable,5,45000
+ORD-074,wulan@example.com,Monitor,1,1750000
+ORD-075,xavier@example.com,Laptop Stand,2,180000
+ORD-076,yanti@example.com,Webcam,2,650000
+ORD-077,zidan@example.com,Headset,1,425000
+ORD-078,agnes@example.com,HDMI Cable,4,85000
+ORD-079,bimo@example.com,SSD 512GB,1,820000
+ORD-080,carla@example.com,RAM 16GB,2,690000
+ORD-081,dara@example.com,Keyboard,2,350000
+ORD-082,emil@example.com,Mouse,5,120000
+ORD-083,fina@example.com,USB-C Cable,4,45000
+ORD-084,gerry@example.com,Monitor,1,1750000
+ORD-085,heru@example.com,Laptop Stand,3,180000
+ORD-086,ines@example.com,Webcam,1,650000
+ORD-087,jessica@example.com,Headset,2,425000
+ORD-088,koko@example.com,HDMI Cable,6,85000
+ORD-089,lestari@example.com,SSD 512GB,2,820000
+ORD-090,mika@example.com,RAM 16GB,1,690000
+ORD-091,nova@example.com,Keyboard,1,350000
+ORD-092,opal@example.com,Mouse,2,120000
+ORD-093,pipit@example.com,USB-C Cable,3,45000
+ORD-094,rahma@example.com,Monitor,2,1750000
+ORD-095,surya@example.com,Laptop Stand,1,180000
+ORD-096,tika@example.com,Webcam,1,650000
+ORD-097,ucok@example.com,Headset,2,425000
+ORD-098,via@example.com,HDMI Cable,5,85000
+ORD-099,wanda@example.com,SSD 512GB,1,820000
+ORD-100,yoga@example.com,RAM 16GB,2,690000

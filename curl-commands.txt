@@ -1,0 +1,90 @@
+# Express Fundamentals API curl commands
+#
+# Start the server first:
+# npm run dev
+#
+# Default base URL:
+# http://127.0.0.1:3000
+
+### Health check
+curl http://127.0.0.1:3000/health
+
+
+### Product: create
+curl -X POST http://127.0.0.1:3000/api/products \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Node.js Book","price":150000,"stock":10}'
+
+
+### Product: create another sample
+curl -X POST http://127.0.0.1:3000/api/products \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Notebook","price":25000,"stock":20}'
+
+
+### Product: list
+curl http://127.0.0.1:3000/api/products
+
+
+### Product: get by id
+# Replace PRODUCT_ID with an id returned by the create or list endpoint.
+curl http://127.0.0.1:3000/api/products/PRODUCT_ID
+
+
+### Product: update by id
+# Replace PRODUCT_ID with an id returned by the create or list endpoint.
+curl -X PUT http://127.0.0.1:3000/api/products/PRODUCT_ID \
+  -H "Content-Type: application/json" \
+  -d '{"price":175000,"stock":8}'
+
+
+### Product: delete by id
+# Replace PRODUCT_ID with an id returned by the create or list endpoint.
+curl -X DELETE http://127.0.0.1:3000/api/products/PRODUCT_ID
+
+
+### Product: validation error example
+curl -X POST http://127.0.0.1:3000/api/products \
+  -H "Content-Type: application/json" \
+  -d '{"name":"","price":"not-a-number","stock":10}'
+
+
+### Buffer: import contacts from CSV
+curl -X POST http://127.0.0.1:3000/api/files/buffer/contacts \
+  -H "Content-Type: text/csv" \
+  --data-binary @samples/contacts.csv
+
+
+### Buffer: import contacts from CSV with form-data
+# Same shape as Postman Body -> form-data -> key: file -> type: File.
+curl -X POST http://127.0.0.1:3000/api/files/buffer/contacts \
+  -F "file=@samples/contacts.csv;type=text/csv"
+
+
+### Buffer: list imported contacts
+curl http://127.0.0.1:3000/api/files/buffer/contacts
+
+
+### Stream: import sales from CSV
+curl -X POST http://127.0.0.1:3000/api/files/stream/sales \
+  -H "Content-Type: text/csv" \
+  --data-binary @samples/sales.csv
+
+
+### Stream: import sales from CSV with form-data
+# Same shape as Postman Body -> form-data -> key: file -> type: File.
+curl -X POST http://127.0.0.1:3000/api/files/stream/sales \
+  -F "file=@samples/sales.csv;type=text/csv"
+
+
+### Stream v2: read samples/sales.csv directly from disk
+# This endpoint highlights a real file stream with chunk logging on the server.
+curl -X POST http://127.0.0.1:3000/api/files/stream/sales/v2
+
+
+### Stream: list imported sales
+curl http://127.0.0.1:3000/api/files/stream/sales
+
+
+### Not found example
+curl http://127.0.0.1:3000/api/unknown-route

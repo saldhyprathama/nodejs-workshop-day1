@@ -1,0 +1,106 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║         Node.js Workshop — Stream Video Challenge (Day 1)           ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+GOAL
+────
+Implement `streamVideoV2` in:
+  src/modules/videos/video.service.ts
+
+The function must stream `samples/videoplayback.mp4` to the HTTP response
+using Node.js streams and HTTP 206 Partial Content (Range requests).
+The browser's <video> player will send a Range header automatically.
+
+──────────────────────────────────────────────────────────────────────
+STEP 1 — Get the total file size
+──────────────────────────────────────────────────────────────────────
+  • Import `statSync` from the built-in `fs` module.
+  • Call `statSync(VIDEO_PATH)` — it returns a Stats object.
+  • Destructure `size` from the result.
+
+  Hint:
+    const { size } = statSync(VIDEO_PATH);
+
+──────────────────────────────────────────────────────────────────────
+STEP 2 — Parse the Range header
+──────────────────────────────────────────────────────────────────────
+  • The browser sends:  Range: bytes=0-
+  • Strip the "bytes=" prefix, then split on "-".
+  • Parse both parts to numbers with Number().
+  • `start` is always present; `end` may be missing → default it.
+
+  Hint:
+    const [startStr, endStr] = rangeHeader.replace(/bytes=/, "").split("-");
+    const start = Number(startStr);
+    // end is optional — if missing, serve one CHUNK_SIZE from start
+    const end = endStr ? Number(endStr) : Math.min(start + CHUNK_SIZE - 1, size - 1);
+
+──────────────────────────────────────────────────────────────────────
+STEP 3 — Handle the case where NO Range header is sent
+──────────────────────────────────────────────────────────────────────
+  • Some clients (e.g. curl without -r) send no Range header.
+  • Default: start = 0, end = first CHUNK_SIZE - 1 (or file end).
+
+  Hint:
+    if (!rangeHeader) {
+      // set start = 0, end = Math.min(CHUNK_SIZE - 1, size - 1)
+    }
+
+──────────────────────────────────────────────────────────────────────
+STEP 4 — Write the HTTP 206 response headers
+──────────────────────────────────────────────────────────────────────
+  • Status must be 206 (Partial Content), NOT 200.
+  • Required headers:
+      Content-Range   : bytes <start>-<end>/<totalSize>
+      Accept-Ranges   : bytes
+      Content-Length  : end - start + 1   ← exact bytes in THIS chunk
+      Content-Type    : video/mp4
+
+  Hint:
+    res.writeHead(206, {
+      "Content-Range":  `bytes ${start}-${end}/${size}`,
+      "Accept-Ranges":  "bytes",
+      "Content-Length": end - start + 1,
+      "Content-Type":   "video/mp4",
+    });
+
+──────────────────────────────────────────────────────────────────────
+STEP 5 — Create a read stream for ONLY the requested byte range
+──────────────────────────────────────────────────────────────────────
+  • Import `createReadStream` from `fs`.
+  • Pass `{ start, end }` as the options object — Node reads ONLY
+    those bytes, so you never load the whole file into memory.
+
+  Hint:
+    createReadStream(VIDEO_PATH, { start, end })
+
+──────────────────────────────────────────────────────────────────────
+STEP 6 — Pipe the stream to the response
+──────────────────────────────────────────────────────────────────────
+  • `.pipe(res)` connects the Readable stream to the Writable response.
+  • Node handles backpressure automatically.
+  • No callbacks needed — pipe manages draining & end events.
+
+  Hint:
+    createReadStream(VIDEO_PATH, { start, end }).pipe(res);
+
+──────────────────────────────────────────────────────────────────────
+KEY CONCEPTS RECAP
+──────────────────────────────────────────────────────────────────────
+  Buffer      — whole file loaded into RAM, fast for small files
+  Stream      — data flows in chunks, memory stays low for large files
+  Pipe        — connects Readable → Writable, manages backpressure
+  HTTP 206    — "I'm sending PART of the file" (Range requests)
+  Backpressure— slow consumer signals fast producer to pause
+
+──────────────────────────────────────────────────────────────────────
+TEST YOUR IMPLEMENTATION
+──────────────────────────────────────────────────────────────────────
+  # First chunk (no range header):
+  curl -i http://localhost:3000/api/videos/stream
+
+  # Second chunk (bytes 5MB → 10MB):
+  curl -i -H "Range: bytes=5242880-10485759" http://localhost:3000/api/videos/stream
+
+  # Or just open the UI and go to the Stream Video page!
+  http://localhost:3000

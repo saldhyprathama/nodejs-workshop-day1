@@ -1,0 +1,12 @@
+{
+  "contacts": [
+    {
+      "name": "Dewi Lestari",
+      "email": "DEWI@EXAMPLE.COM"
+    },
+    {
+      "name": "Eka  Putra",
+      "email": "eka@example.com"
+    }
+  ]
+}
