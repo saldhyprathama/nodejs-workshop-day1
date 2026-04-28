@@ -3,32 +3,35 @@ import { join } from "path";
 import type { Response } from "express";
 
 const VIDEO_PATH = join(process.cwd(), "samples", "videoplayback.mp4");
-const CHUNK_SIZE = 1 * 1024 * 1024; // 1MB
+const CHUNK_SIZE = 1 * 1024 * 1024; // 5MB
 
 export const videoService = {
-  // ─────────────────────────────────────────────────────────────────
-  //    YOUR TURN — implement streamVideoV2
-  //    Read WORKSHOP_HINTS.txt for step-by-step guidance.
-  //    Endpoint: GET /api/videos/stream-v2
-  // ─────────────────────────────────────────────────────────────────
   streamVideo(rangeHeader: string | undefined, res: Response): void {
-    // STEP 1: Get the total file size using statSync
+    // STEP 1: Get the total file size
+    const { size } = statSync(VIDEO_PATH);
 
-    // STEP 2: Parse the Range header (e.g. "bytes=0-")
+    // STEP 2 & 3: Parse Range header, or default to first chunk
+    let start: number;
+    let end: number;
 
-    // STEP 3: Handle when there is NO Range header
+    if (!rangeHeader) {
+      start = 0;
+      end = Math.min(CHUNK_SIZE - 1, size - 1);
+    } else {
+      const [startStr, endStr] = rangeHeader.replace(/bytes=/, "").split("-");
+      start = Number(startStr);
+      end = endStr ? Number(endStr) : Math.min(start + CHUNK_SIZE - 1, size - 1);
+    }
 
-    // STEP 4: Write HTTP 206 response headers
-    // res.writeHead(206, { "Content-Range": ..., "Accept-Ranges": ..., "Content-Length": ..., "Content-Type": ... })
+    // STEP 4: Write HTTP 206 Partial Content headers
+    res.writeHead(206, {
+      "Content-Range": `bytes ${start}-${end}/${size}`,
+      "Accept-Ranges": "bytes",
+      "Content-Length": end - start + 1,
+      "Content-Type": "video/mp4",
+    });
 
-    // STEP 5: Create a read stream with { start, end }
-    // const stream = createReadStream(VIDEO_PATH, { start, end })
-
-    // STEP 6: Pipe the stream to the response
-    // stream.pipe(res)
-
-    res
-      .status(501)
-      .json({ message: "Not implemented yet — check WORKSHOP_HINTS.txt!" });
+    // STEP 5 & 6: Stream only the requested byte range
+    createReadStream(VIDEO_PATH, { start, end }).pipe(res);
   },
 };
