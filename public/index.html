@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Node.js Workshop</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: 'Segoe UI', system-ui, sans-serif;
@@ -23,472 +30,879 @@
       background: #1e293b;
       border-bottom: 1px solid #334155;
     }
-    nav .logo { font-weight: 700; font-size: 1.1rem; color: #38bdf8; margin-right: auto; }
+
+    nav .logo {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #38bdf8;
+      margin-right: auto;
+    }
+
     nav button {
-      background: none; border: none; color: #94a3b8;
-      cursor: pointer; font-size: 0.9rem; padding: 0.4rem 0.8rem;
-      border-radius: 6px; transition: background 0.2s, color 0.2s;
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 0.9rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      transition: background 0.2s, color 0.2s;
     }
-    nav button:hover, nav button.active {
-      background: #334155; color: #e2e8f0;
+
+    nav button:hover,
+    nav button.active {
+      background: #334155;
+      color: #e2e8f0;
     }
-    nav button.active { color: #38bdf8; font-weight: 600; }
+
+    nav button.active {
+      color: #38bdf8;
+      font-weight: 600;
+    }
 
     /* ── PAGES ── */
-    .page { display: none; padding: 2rem; max-width: 900px; margin: 0 auto; }
-    .page.active { display: block; }
+    .page {
+      display: none;
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .page.active {
+      display: block;
+    }
 
     /* ── HOME CARDS ── */
-    .home-title { text-align: center; margin-bottom: 0.5rem; font-size: 2rem; font-weight: 700; color: #f1f5f9; }
-    .home-sub { text-align: center; color: #64748b; margin-bottom: 2.5rem; font-size: 1rem; }
-    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+    .home-title {
+      text-align: center;
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #f1f5f9;
+    }
+
+    .home-sub {
+      text-align: center;
+      color: #64748b;
+      margin-bottom: 2.5rem;
+      font-size: 1rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
     .card {
-      background: #1e293b; border: 1px solid #334155; border-radius: 16px;
-      padding: 2rem 1.5rem; text-align: center; cursor: pointer;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
       transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
     }
-    .card:hover { transform: translateY(-4px); border-color: #38bdf8; box-shadow: 0 8px 32px #38bdf820; }
-    .card .icon { font-size: 3rem; margin-bottom: 1rem; }
-    .card h2 { font-size: 1.2rem; font-weight: 600; color: #f1f5f9; margin-bottom: 0.4rem; }
-    .card p { font-size: 0.85rem; color: #64748b; line-height: 1.5; }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #38bdf8;
+      box-shadow: 0 8px 32px #38bdf820;
+    }
+
+    .card .icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin-bottom: 0.4rem;
+    }
+
+    .card p {
+      font-size: 0.85rem;
+      color: #64748b;
+      line-height: 1.5;
+    }
 
     /* ── SECTION HEADERS ── */
     .section-title {
-      font-size: 1.4rem; font-weight: 700; color: #f1f5f9;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #f1f5f9;
       margin-bottom: 0.25rem;
     }
-    .section-sub { color: #64748b; font-size: 0.9rem; margin-bottom: 1.5rem; }
-    .divider { border: none; border-top: 1px solid #334155; margin: 2rem 0; }
+
+    .section-sub {
+      color: #64748b;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #334155;
+      margin: 2rem 0;
+    }
 
     /* ── BADGE / TAG ── */
     .badge {
-      display: inline-block; padding: 2px 10px; border-radius: 999px;
-      font-size: 0.75rem; font-weight: 600; background: #0ea5e920; color: #38bdf8;
-      border: 1px solid #0ea5e940; margin-bottom: 1rem;
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: #0ea5e920;
+      color: #38bdf8;
+      border: 1px solid #0ea5e940;
+      margin-bottom: 1rem;
     }
 
     /* ── BUTTONS ── */
     .btn {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      padding: 0.55rem 1.2rem; border-radius: 8px; font-size: 0.9rem;
-      font-weight: 600; cursor: pointer; border: none; transition: background 0.2s, opacity 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 1.2rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s, opacity 0.2s;
     }
-    .btn-primary { background: #0ea5e9; color: #fff; }
-    .btn-primary:hover { background: #38bdf8; }
-    .btn-secondary { background: #334155; color: #e2e8f0; }
-    .btn-secondary:hover { background: #475569; }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-primary {
+      background: #0ea5e9;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #38bdf8;
+    }
+
+    .btn-secondary {
+      background: #334155;
+      color: #e2e8f0;
+    }
+
+    .btn-secondary:hover {
+      background: #475569;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
 
     /* ── TABLE ── */
-    .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid #334155; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
-    thead { background: #1e293b; }
-    th { padding: 0.75rem 1rem; text-align: left; color: #94a3b8; font-weight: 600; border-bottom: 1px solid #334155; }
-    td { padding: 0.65rem 1rem; border-bottom: 1px solid #1e293b; color: #cbd5e1; }
-    tbody tr:last-child td { border-bottom: none; }
-    tbody tr:hover td { background: #1e293b50; }
-    .empty { text-align: center; color: #475569; padding: 2rem; }
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid #334155;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    thead {
+      background: #1e293b;
+    }
+
+    th {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      color: #94a3b8;
+      font-weight: 600;
+      border-bottom: 1px solid #334155;
+    }
+
+    td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid #1e293b;
+      color: #cbd5e1;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover td {
+      background: #1e293b50;
+    }
+
+    .empty {
+      text-align: center;
+      color: #475569;
+      padding: 2rem;
+    }
 
     /* ── UPLOAD ── */
     .upload-area {
-      border: 2px dashed #334155; border-radius: 12px;
-      padding: 2rem; text-align: center; cursor: pointer;
+      display: block;
+      width: 100%;
+      border: 2px dashed #334155;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
       transition: border-color 0.2s, background 0.2s;
       background: #1e293b40;
+      margin-bottom: 1rem;
     }
-    .upload-area:hover, .upload-area.drag { border-color: #38bdf8; background: #0ea5e910; }
-    .upload-area .up-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
-    .upload-area p { color: #64748b; font-size: 0.9rem; }
-    .upload-area strong { color: #94a3b8; }
-    #file-input { display: none; }
+
+    .upload-area:hover,
+    .upload-area.drag {
+      border-color: #38bdf8;
+      background: #0ea5e910;
+    }
+
+    .upload-area .up-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .upload-area p {
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+
+    .upload-area strong {
+      color: #94a3b8;
+    }
+
+    .upload-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .upload-actions .btn {
+      flex: 0 0 auto;
+      justify-content: center;
+      min-width: 140px;
+    }
+
+    @media (max-width: 640px) {
+      .upload-actions {
+        flex-direction: column;
+      }
+
+      .upload-actions .btn {
+        width: 100%;
+      }
+    }
+
+    #file-input {
+      display: none;
+    }
 
     /* ── STATUS BOX ── */
     .status-box {
-      padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.875rem;
-      margin-top: 1rem; display: none;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      margin-top: 1rem;
+      display: none;
     }
-    .status-box.info  { background: #0ea5e920; border: 1px solid #0ea5e940; color: #38bdf8; display: block; }
-    .status-box.success { background: #22c55e20; border: 1px solid #22c55e40; color: #4ade80; display: block; }
-    .status-box.error { background: #ef444420; border: 1px solid #ef444440; color: #f87171; display: block; }
+
+    .status-box.info {
+      background: #0ea5e920;
+      border: 1px solid #0ea5e940;
+      color: #38bdf8;
+      display: block;
+    }
+
+    .status-box.success {
+      background: #22c55e20;
+      border: 1px solid #22c55e40;
+      color: #4ade80;
+      display: block;
+    }
+
+    .status-box.error {
+      background: #ef444420;
+      border: 1px solid #ef444440;
+      color: #f87171;
+      display: block;
+    }
 
     /* ── VIDEO ── */
-    .video-wrap { border-radius: 16px; overflow: hidden; background: #000; border: 1px solid #334155; }
-    video { width: 100%; display: block; max-height: 500px; }
-    .video-info {
-      background: #1e293b; border: 1px solid #334155; border-radius: 12px;
-      padding: 1rem 1.25rem; margin-top: 1.25rem; font-size: 0.875rem;
+    .video-wrap {
+      border-radius: 16px;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid #334155;
     }
-    .video-info .vi-row { display: flex; gap: 0.5rem; margin-bottom: 0.35rem; }
-    .video-info .vi-label { color: #64748b; min-width: 120px; }
-    .video-info .vi-val { color: #94a3b8; }
-    .video-info .vi-val code { background: #0f172a; padding: 2px 6px; border-radius: 4px; color: #38bdf8; font-size: 0.8rem; }
+
+    video {
+      width: 100%;
+      display: block;
+      max-height: 500px;
+    }
+
+    .video-info {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-top: 1.25rem;
+      font-size: 0.875rem;
+    }
+
+    .video-info .vi-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .video-info .vi-label {
+      color: #64748b;
+      min-width: 120px;
+    }
+
+    .video-info .vi-val {
+      color: #94a3b8;
+    }
+
+    .video-info .vi-val code {
+      background: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #38bdf8;
+      font-size: 0.8rem;
+    }
 
     /* ── STREAM TRIGGER ── */
     .trigger-box {
-      background: #1e293b; border: 1px solid #334155; border-radius: 12px;
-      padding: 1.25rem; margin-bottom: 1.5rem;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
     }
-    .trigger-box h3 { font-size: 1rem; font-weight: 600; color: #f1f5f9; margin-bottom: 0.35rem; }
-    .trigger-box p { font-size: 0.85rem; color: #64748b; margin-bottom: 1rem; }
+
+    .trigger-box h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin-bottom: 0.35rem;
+    }
+
+    .trigger-box p {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-bottom: 1rem;
+    }
 
     /* ── STATS ── */
-    .stats { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .stats {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
     .stat-card {
-      flex: 1; min-width: 130px; background: #1e293b;
-      border: 1px solid #334155; border-radius: 12px; padding: 1rem;
+      flex: 1;
+      min-width: 130px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 1rem;
       text-align: center;
     }
-    .stat-card .stat-num { font-size: 1.8rem; font-weight: 700; color: #38bdf8; }
-    .stat-card .stat-label { font-size: 0.78rem; color: #64748b; margin-top: 0.2rem; }
+
+    .stat-card .stat-num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.78rem;
+      color: #64748b;
+      margin-top: 0.2rem;
+    }
 
     /* ── STEPS BOX ── */
     .steps-box {
-      background: #1e293b; border: 1px solid #334155; border-radius: 12px;
-      padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
     }
-    .steps-heading { font-size: 0.9rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.85rem; }
-    .steps-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
-    .steps-list li { display: flex; align-items: baseline; gap: 0.6rem; font-size: 0.875rem; color: #cbd5e1; }
+
+    .steps-heading {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 0.85rem;
+    }
+
+    .steps-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .steps-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      font-size: 0.875rem;
+      color: #cbd5e1;
+    }
+
     .step-num {
-      flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
-      background: #0ea5e920; border: 1px solid #0ea5e960;
-      color: #38bdf8; font-size: 0.75rem; font-weight: 700;
-      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #0ea5e920;
+      border: 1px solid #0ea5e960;
+      color: #38bdf8;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
-    .steps-list code { background: #0f172a; padding: 1px 6px; border-radius: 4px; color: #7dd3fc; font-size: 0.8rem; }
+
+    .steps-list code {
+      background: #0f172a;
+      padding: 1px 6px;
+      border-radius: 4px;
+      color: #7dd3fc;
+      font-size: 0.8rem;
+    }
 
     /* ── V2 STATUS PILL ── */
     .v2-status-pill {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      padding: 4px 14px; border-radius: 999px; font-size: 0.8rem; font-weight: 600;
-      background: #f59e0b20; border: 1px solid #f59e0b40; color: #fbbf24;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: #f59e0b20;
+      border: 1px solid #f59e0b40;
+      color: #fbbf24;
       transition: background 0.3s, color 0.3s, border-color 0.3s;
     }
-    .v2-status-pill.ready { background: #22c55e20; border-color: #22c55e40; color: #4ade80; }
-    .v2-status-pill.error { background: #ef444420; border-color: #ef444440; color: #f87171; }
+
+    .v2-status-pill.ready {
+      background: #22c55e20;
+      border-color: #22c55e40;
+      color: #4ade80;
+    }
+
+    .v2-status-pill.error {
+      background: #ef444420;
+      border-color: #ef444440;
+      color: #f87171;
+    }
 
     /* ── V2 PLACEHOLDER ── */
     .v2-placeholder {
-      border: 2px dashed #334155; border-radius: 16px;
-      padding: 3rem 2rem; text-align: center; background: #1e293b40;
+      border: 2px dashed #334155;
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      text-align: center;
+      background: #1e293b40;
     }
-    .v2-ph-icon { font-size: 3.5rem; margin-bottom: 0.75rem; }
-    .v2-ph-title { font-size: 1.1rem; font-weight: 600; color: #475569; margin-bottom: 0.4rem; }
-    .v2-ph-sub { font-size: 0.875rem; color: #334155; }
-    .v2-ph-sub code { color: #f59e0b; background: #f59e0b10; padding: 1px 6px; border-radius: 4px; }
+
+    .v2-ph-icon {
+      font-size: 3.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .v2-ph-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 0.4rem;
+    }
+
+    .v2-ph-sub {
+      font-size: 0.875rem;
+      color: #334155;
+    }
+
+    .v2-ph-sub code {
+      color: #f59e0b;
+      background: #f59e0b10;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
   </style>
 </head>
+
 <body>
 
-<!-- NAV -->
-<nav>
-  <span class="logo">⚡ Node.js Workshop</span>
-  <button class="active" onclick="showPage('home', this)">Home</button>
-  <button onclick="showPage('buffer', this)">Buffer</button>
-  <button onclick="showPage('stream', this)">Stream File</button>
-  <button onclick="showPage('video', this)">Stream Video</button>
-</nav>
+  <!-- NAV -->
+  <nav>
+    <span class="logo">⚡ Node.js Workshop</span>
+    <button class="active" onclick="showPage('home', this)">Home</button>
+    <button onclick="showPage('buffer', this)">Buffer</button>
+    <button onclick="showPage('stream', this)">Stream File</button>
+    <button onclick="showPage('video', this)">Stream Video</button>
+  </nav>
 
-<!-- ═══════════════ HOME ═══════════════ -->
-<div id="page-home" class="page active">
-  <br>
-  <p class="home-title">Node.js Core Concepts</p>
-  <p class="home-sub">Explore Buffer, Stream, and Video Streaming — hands-on workshop demos</p>
-  <div class="cards">
-    <div class="card" onclick="showPage('buffer', document.querySelectorAll('nav button')[1])">
-      <div class="icon">📦</div>
-      <h2>Buffer</h2>
-      <p>Upload & list contacts via raw Buffer. Ideal for small payloads held entirely in memory.</p>
-    </div>
-    <div class="card" onclick="showPage('stream', document.querySelectorAll('nav button')[2])">
-      <div class="icon">🌊</div>
-      <h2>Stream File</h2>
-      <p>Trigger a real <code>fs.createReadStream</code> pipeline and list the streamed sales data.</p>
-    </div>
-    <div class="card" onclick="showPage('video', document.querySelectorAll('nav button')[3])">
-      <div class="icon">🎬</div>
-      <h2>Stream Video</h2>
-      <p>HTTP Range-based video streaming — served in 5 MB chunks via <code>createReadStream</code>.</p>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════ BUFFER PAGE ═══════════════ -->
-<div id="page-buffer" class="page">
-  <span class="badge">Buffer</span>
-  <p class="section-title">📦 Contacts — Buffer</p>
-  <p class="section-sub">Raw CSV bytes are loaded entirely into a <strong>Buffer</strong> in memory and parsed synchronously.</p>
-
-  <!-- Upload -->
-  <div class="trigger-box">
-    <h3>Upload Contacts CSV</h3>
-    <p>Select a CSV file. It is sent as raw bytes and parsed from a Buffer on the server.</p>
-    <label class="upload-area" id="upload-label" for="file-input" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
-      <div class="up-icon">📂</div>
-      <p><strong>Click to browse</strong> or drag & drop a .csv file</p>
-      <p id="file-name" style="margin-top:0.5rem;color:#38bdf8;font-size:0.85rem;"></p>
-    </label>
-    <input type="file" id="file-input" accept=".csv,text/csv" onchange="handleFileSelect(event)" />
+  <!-- ═══════════════ HOME ═══════════════ -->
+  <div id="page-home" class="page active">
     <br>
-    <button class="btn btn-primary" id="upload-btn" onclick="uploadContacts()" disabled>⬆️ Upload</button>
-    <div class="status-box" id="upload-status"></div>
-  </div>
-
-  <!-- List -->
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
-    <div>
-      <p class="section-title" style="font-size:1.1rem;">Contact List</p>
+    <p class="home-title">Node.js Core Concepts</p>
+    <p class="home-sub">Explore Buffer, Stream, and Video Streaming — hands-on workshop demos</p>
+    <div class="cards">
+      <div class="card" onclick="showPage('buffer', document.querySelectorAll('nav button')[1])">
+        <div class="icon">📦</div>
+        <h2>Buffer</h2>
+        <p>Upload & list contacts via raw Buffer. Ideal for small payloads held entirely in memory.</p>
+      </div>
+      <div class="card" onclick="showPage('stream', document.querySelectorAll('nav button')[2])">
+        <div class="icon">🌊</div>
+        <h2>Stream File</h2>
+        <p>Trigger a real <code>fs.createReadStream</code> pipeline and list the streamed sales data.</p>
+      </div>
+      <div class="card" onclick="showPage('video', document.querySelectorAll('nav button')[3])">
+        <div class="icon">🎬</div>
+        <h2>Stream Video</h2>
+        <p>HTTP Range-based video streaming — served in 5 MB chunks via <code>createReadStream</code>.</p>
+      </div>
     </div>
-    <button class="btn btn-secondary" onclick="loadContacts()">🔄 Refresh</button>
-  </div>
-  <div class="stats">
-    <div class="stat-card"><div class="stat-num" id="contacts-count">—</div><div class="stat-label">Contacts Loaded</div></div>
-  </div>
-  <div class="table-wrap">
-    <table id="contacts-table">
-      <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th></tr></thead>
-      <tbody id="contacts-body"><tr><td colspan="4" class="empty">Click Refresh to load contacts</td></tr></tbody>
-    </table>
-  </div>
-</div>
-
-<!-- ═══════════════ STREAM PAGE ═══════════════ -->
-<div id="page-stream" class="page">
-  <span class="badge">Stream</span>
-  <p class="section-title">🌊 Sales — File Stream</p>
-  <p class="section-sub">The server reads <code>samples/sales.csv</code> with <strong>fs.createReadStream</strong>, pipes through a Transform, and writes to memory.</p>
-
-  <!-- Trigger -->
-  <div class="trigger-box">
-    <h3>Trigger Stream Pipeline</h3>
-    <p>Calls <code>POST /api/files/stream/sales/v2</code> — the server streams the file, no upload needed.</p>
-    <button class="btn btn-primary" id="stream-btn" onclick="triggerStream()">▶️ Run Stream Pipeline</button>
-    <div class="status-box" id="stream-status"></div>
   </div>
 
-  <!-- List -->
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
-    <div>
-      <p class="section-title" style="font-size:1.1rem;">Sales List</p>
+  <!-- ═══════════════ BUFFER PAGE ═══════════════ -->
+  <div id="page-buffer" class="page">
+    <span class="badge">Buffer</span>
+    <p class="section-title">📦 Contacts — Buffer</p>
+    <p class="section-sub">Raw CSV bytes are loaded entirely into a <strong>Buffer</strong> in memory and parsed
+      synchronously.</p>
+
+    <!-- Upload -->
+    <div class="trigger-box">
+      <h3>Upload Contacts CSV</h3>
+      <p>Select a CSV file. It is sent as raw bytes and parsed from a Buffer on the server.</p>
+      <label class="upload-area" id="upload-label" for="file-input" ondragover="handleDragOver(event)"
+        ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+        <div class="up-icon">📂</div>
+        <p><strong>Click to browse</strong> or drag & drop a .csv file</p>
+        <p id="file-name" style="margin-top:0.5rem;color:#38bdf8;font-size:0.85rem;"></p>
+      </label>
+      <input type="file" id="file-input" accept=".csv,text/csv" onchange="handleFileSelect(event)" />
+      <div class="upload-actions">
+        <button class="btn btn-primary" id="upload-btn" onclick="uploadContacts()" disabled>⬆️ Upload</button>
+      </div>
+      <div class="status-box" id="upload-status"></div>
     </div>
-    <button class="btn btn-secondary" onclick="loadSales()">🔄 Refresh</button>
+
+    <!-- List -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+      <div>
+        <p class="section-title" style="font-size:1.1rem;">Contact List</p>
+      </div>
+      <button class="btn btn-secondary" onclick="loadContacts()">🔄 Refresh</button>
+    </div>
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-num" id="contacts-count">—</div>
+        <div class="stat-label">Contacts Loaded</div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table id="contacts-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+          </tr>
+        </thead>
+        <tbody id="contacts-body">
+          <tr>
+            <td colspan="4" class="empty">Click Refresh to load contacts</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <div class="stats">
-    <div class="stat-card"><div class="stat-num" id="sales-count">—</div><div class="stat-label">Sales Records</div></div>
-    <div class="stat-card"><div class="stat-num" id="sales-total">—</div><div class="stat-label">Total Amount</div></div>
+
+  <!-- ═══════════════ STREAM PAGE ═══════════════ -->
+  <div id="page-stream" class="page">
+    <span class="badge">Stream</span>
+    <p class="section-title">🌊 Sales — File Stream</p>
+    <p class="section-sub">The server reads <code>samples/sales.csv</code> with <strong>fs.createReadStream</strong>,
+      pipes through a Transform, and writes to memory.</p>
+
+    <!-- Trigger -->
+    <div class="trigger-box">
+      <h3>Trigger Stream Pipeline</h3>
+      <p>Calls <code>POST /api/files/stream/sales/v2</code> — the server streams the file, no upload needed.</p>
+      <button class="btn btn-primary" id="stream-btn" onclick="triggerStream()">▶️ Run Stream Pipeline</button>
+      <div class="status-box" id="stream-status"></div>
+    </div>
+
+    <!-- List -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+      <div>
+        <p class="section-title" style="font-size:1.1rem;">Sales List</p>
+      </div>
+      <button class="btn btn-secondary" onclick="loadSales()">🔄 Refresh</button>
+    </div>
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-num" id="sales-count">—</div>
+        <div class="stat-label">Sales Records</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="sales-total">—</div>
+        <div class="stat-label">Total Amount</div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table id="sales-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>ID</th>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Amount</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="sales-body">
+          <tr>
+            <td colspan="6" class="empty">Click Refresh or run the pipeline first</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <div class="table-wrap">
-    <table id="sales-table">
-      <thead><tr><th>#</th><th>ID</th><th>Product</th><th>Qty</th><th>Amount</th><th>Date</th></tr></thead>
-      <tbody id="sales-body"><tr><td colspan="6" class="empty">Click Refresh or run the pipeline first</td></tr></tbody>
-    </table>
+
+  <!-- ═══════════════ VIDEO PAGE ═══════════════ -->
+  <div id="page-video" class="page">
+    <span class="badge">Stream Video</span>
+    <p class="section-title">🎬 Video Streaming</p>
+    <p class="section-sub">Streaming <code>samples/videoplayback.mp4</code> in <strong>5 MB chunks</strong> using HTTP
+      Range requests and <code>fs.createReadStream</code>.</p>
+
+    <!-- Player -->
+    <div class="video-wrap" style="margin-bottom:1.25rem;">
+      <video controls preload="metadata">
+        <source src="/api/videos/stream" type="video/mp4" />
+        Your browser does not support HTML5 video.
+      </video>
+    </div>
+
+    <!-- Info -->
+    <div class="video-info">
+      <div class="vi-row"><span class="vi-label">Endpoint</span><span
+          class="vi-val"><code>GET /api/videos/stream</code></span></div>
+      <div class="vi-row"><span class="vi-label">Chunk size</span><span
+          class="vi-val"><code>5 MB = 5 × 1024 × 1024 bytes</code></span></div>
+      <div class="vi-row"><span class="vi-label">Method</span><span
+          class="vi-val"><code>fs.createReadStream(VIDEO_PATH, { start, end }).pipe(res)</code></span></div>
+      <div class="vi-row"><span class="vi-label">Protocol</span><span
+          class="vi-val"><code>HTTP 206 Partial Content + Accept-Ranges: bytes</code></span></div>
+      <div class="vi-row"><span class="vi-label">File</span><span
+          class="vi-val"><code>samples/videoplayback.mp4</code></span></div>
+    </div>
   </div>
-</div>
 
-<!-- ═══════════════ VIDEO PAGE ═══════════════ -->
-<div id="page-video" class="page">
-  <span class="badge">Stream Video</span>
-  <p class="section-title">🎬 Video Streaming</p>
-  <p class="section-sub">Streaming <code>samples/videoplayback.mp4</code> in <strong>5 MB chunks</strong> using HTTP Range requests and <code>fs.createReadStream</code>.</p>
-
-  <!-- Player -->
-  <div class="video-wrap" style="margin-bottom:1.25rem;">
-    <video controls preload="metadata">
-      <source src="/api/videos/stream" type="video/mp4" />
-      Your browser does not support HTML5 video.
-    </video>
-  </div>
-
-  <!-- Info -->
-  <div class="video-info">
-    <div class="vi-row"><span class="vi-label">Endpoint</span><span class="vi-val"><code>GET /api/videos/stream</code></span></div>
-    <div class="vi-row"><span class="vi-label">Chunk size</span><span class="vi-val"><code>5 MB = 5 × 1024 × 1024 bytes</code></span></div>
-    <div class="vi-row"><span class="vi-label">Method</span><span class="vi-val"><code>fs.createReadStream(VIDEO_PATH, { start, end }).pipe(res)</code></span></div>
-    <div class="vi-row"><span class="vi-label">Protocol</span><span class="vi-val"><code>HTTP 206 Partial Content + Accept-Ranges: bytes</code></span></div>
-    <div class="vi-row"><span class="vi-label">File</span><span class="vi-val"><code>samples/videoplayback.mp4</code></span></div>
-  </div>
-</div>
-
-<script>
-  /* ── PAGE NAVIGATION ── */
-  function showPage(id, btn) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-    document.getElementById('page-' + id).classList.add('active');
-    if (btn) btn.classList.add('active');
-  }
-
-  /* ── DRAG & DROP ── */
-  let selectedFile = null;
-  function handleDragOver(e) { e.preventDefault(); document.getElementById('upload-label').classList.add('drag'); }
-  function handleDragLeave() { document.getElementById('upload-label').classList.remove('drag'); }
-  function handleDrop(e) {
-    e.preventDefault();
-    handleDragLeave();
-    const file = e.dataTransfer.files[0];
-    if (file) setFile(file);
-  }
-  function handleFileSelect(e) { const f = e.target.files[0]; if (f) setFile(f); }
-  function setFile(file) {
-    selectedFile = file;
-    document.getElementById('file-name').textContent = '📄 ' + file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
-    document.getElementById('upload-btn').disabled = false;
-  }
-
-  /* ── UPLOAD CONTACTS ── */
-  async function uploadContacts() {
-    if (!selectedFile) return;
-    const btn = document.getElementById('upload-btn');
-    const status = document.getElementById('upload-status');
-    btn.disabled = true;
-    setStatus(status, 'info', '⏳ Uploading…');
-    try {
-      const buf = await selectedFile.arrayBuffer();
-      const res = await fetch('/api/files/buffer/contacts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/csv' },
-        body: buf
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Upload failed');
-      setStatus(status, 'success', '✅ ' + (data.message || 'Uploaded!') + ' — ' + (data.imported ?? '') + ' contacts imported.');
-      loadContacts();
-    } catch (err) {
-      setStatus(status, 'error', '❌ ' + err.message);
-    } finally {
-      btn.disabled = false;
+  <script>
+    /* ── PAGE NAVIGATION ── */
+    function showPage(id, btn) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+      document.getElementById('page-' + id).classList.add('active');
+      if (btn) btn.classList.add('active');
     }
-  }
 
-  /* ── LOAD CONTACTS ── */
-  async function loadContacts() {
-    const tbody = document.getElementById('contacts-body');
-    const countEl = document.getElementById('contacts-count');
-    tbody.innerHTML = '<tr><td colspan="4" class="empty">Loading…</td></tr>';
-    try {
-      const res = await fetch('/api/files/buffer/contacts');
-      const data = await res.json();
-      const rows = data.data ?? [];
-      countEl.textContent = rows.length;
-      if (!rows.length) { tbody.innerHTML = '<tr><td colspan="4" class="empty">No contacts yet — upload a CSV first</td></tr>'; return; }
-      tbody.innerHTML = rows.map((c, i) =>
-        `<tr><td>${i + 1}</td><td>${esc(c.name ?? c.Name ?? '')}</td><td>${esc(c.email ?? c.Email ?? '')}</td><td>${esc(c.phone ?? c.Phone ?? '')}</td></tr>`
-      ).join('');
-    } catch (err) {
-      tbody.innerHTML = '<tr><td colspan="4" class="empty">Error: ' + err.message + '</td></tr>';
+    /* ── DRAG & DROP ── */
+    let selectedFile = null;
+    function handleDragOver(e) { e.preventDefault(); document.getElementById('upload-label').classList.add('drag'); }
+    function handleDragLeave() { document.getElementById('upload-label').classList.remove('drag'); }
+    function handleDrop(e) {
+      e.preventDefault();
+      handleDragLeave();
+      const file = e.dataTransfer.files[0];
+      if (file) setFile(file);
     }
-  }
-
-  /* ── TRIGGER STREAM ── */
-  async function triggerStream() {
-    const btn = document.getElementById('stream-btn');
-    const status = document.getElementById('stream-status');
-    btn.disabled = true;
-    setStatus(status, 'info', '⏳ Running stream pipeline on the server…');
-    try {
-      const res = await fetch('/api/files/stream/sales/v2', { method: 'POST' });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Stream failed');
-      setStatus(status, 'success', '✅ ' + (data.message || 'Done!') + (data.imported ? ' — ' + data.imported + ' records processed.' : ''));
-      loadSales();
-    } catch (err) {
-      setStatus(status, 'error', '❌ ' + err.message);
-    } finally {
-      btn.disabled = false;
+    function handleFileSelect(e) { const f = e.target.files[0]; if (f) setFile(f); }
+    function setFile(file) {
+      selectedFile = file;
+      document.getElementById('file-name').textContent = '📄 ' + file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+      document.getElementById('upload-btn').disabled = false;
     }
-  }
 
-  /* ── LOAD SALES ── */
-  async function loadSales() {
-    const tbody = document.getElementById('sales-body');
-    const countEl = document.getElementById('sales-count');
-    const totalEl = document.getElementById('sales-total');
-    tbody.innerHTML = '<tr><td colspan="6" class="empty">Loading…</td></tr>';
-    try {
-      const res = await fetch('/api/files/stream/sales');
-      const data = await res.json();
-      const rows = data.data ?? [];
-      countEl.textContent = rows.length;
-      const total = rows.reduce((s, r) => s + Number(r.amount ?? r.Amount ?? r.total ?? 0), 0);
-      totalEl.textContent = total ? '$' + total.toLocaleString(undefined, { maximumFractionDigits: 2 }) : '—';
-      if (!rows.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty">No sales yet — run the pipeline first</td></tr>'; return; }
-      tbody.innerHTML = rows.map((r, i) => {
-        const keys = Object.keys(r);
-        const id   = r.id ?? r.ID ?? r[keys[0]] ?? '';
-        const prod = r.product ?? r.Product ?? r.name ?? r[keys[1]] ?? '';
-        const qty  = r.quantity ?? r.Quantity ?? r.qty ?? r[keys[2]] ?? '';
-        const amt  = r.amount ?? r.Amount ?? r.total ?? r[keys[3]] ?? '';
-        const date = r.date ?? r.Date ?? r[keys[4]] ?? '';
-        return `<tr><td>${i+1}</td><td>${esc(id)}</td><td>${esc(prod)}</td><td>${esc(qty)}</td><td>${esc(String(amt))}</td><td>${esc(date)}</td></tr>`;
-      }).join('');
-    } catch (err) {
-      tbody.innerHTML = '<tr><td colspan="6" class="empty">Error: ' + err.message + '</td></tr>';
+    /* ── UPLOAD CONTACTS ── */
+    async function uploadContacts() {
+      if (!selectedFile) return;
+      const btn = document.getElementById('upload-btn');
+      const status = document.getElementById('upload-status');
+      btn.disabled = true;
+      setStatus(status, 'info', '⏳ Uploading…');
+      try {
+        const buf = await selectedFile.arrayBuffer();
+        const res = await fetch('/api/files/buffer/contacts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/csv' },
+          body: buf
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Upload failed');
+        setStatus(status, 'success', '✅ ' + (data.message || 'Uploaded!') + ' — ' + (data.imported ?? '') + ' contacts imported.');
+        loadContacts();
+      } catch (err) {
+        setStatus(status, 'error', '❌ ' + err.message);
+      } finally {
+        btn.disabled = false;
+      }
     }
-  }
 
-  /* ── HELPERS ── */
-  function setStatus(el, type, msg) {
-    el.className = 'status-box ' + type;
-    el.textContent = msg;
-  }
-  function esc(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
+    /* ── LOAD CONTACTS ── */
+    async function loadContacts() {
+      const tbody = document.getElementById('contacts-body');
+      const countEl = document.getElementById('contacts-count');
+      tbody.innerHTML = '<tr><td colspan="4" class="empty">Loading…</td></tr>';
+      try {
+        const res = await fetch('/api/files/buffer/contacts');
+        const data = await res.json();
+        const rows = data.data ?? [];
+        countEl.textContent = rows.length;
+        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="4" class="empty">No contacts yet — upload a CSV first</td></tr>'; return; }
+        tbody.innerHTML = rows.map((c, i) =>
+          `<tr><td>${i + 1}</td><td>${esc(c.name ?? c.Name ?? '')}</td><td>${esc(c.email ?? c.Email ?? '')}</td><td>${esc(c.phone ?? c.Phone ?? '')}</td></tr>`
+        ).join('');
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="4" class="empty">Error: ' + err.message + '</td></tr>';
+      }
+    }
 
-  /* ── V2 VIDEO CHALLENGE ── */
-  async function testV2() {
-    const pill = document.getElementById('v2-status');
-    const loadBtn = document.getElementById('load-v2-btn');
-    pill.className = 'v2-status-pill';
-    pill.textContent = '⏳ Testing…';
-    try {
-      const res = await fetch('/api/videos/stream-v2', { headers: { 'Range': 'bytes=0-' } });
-      if (res.status === 206) {
-        pill.className = 'v2-status-pill ready';
-        pill.textContent = '✅ 206 Partial Content — ready!';
-        loadBtn.disabled = false;
-      } else if (res.status === 501) {
-        pill.className = 'v2-status-pill';
-        pill.textContent = '🚧 501 — not implemented yet';
-        loadBtn.disabled = true;
-      } else {
+    /* ── TRIGGER STREAM ── */
+    async function triggerStream() {
+      const btn = document.getElementById('stream-btn');
+      const status = document.getElementById('stream-status');
+      btn.disabled = true;
+      setStatus(status, 'info', '⏳ Running stream pipeline on the server…');
+      try {
+        const res = await fetch('/api/files/stream/sales/v2', { method: 'POST' });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Stream failed');
+        setStatus(status, 'success', '✅ ' + (data.message || 'Done!') + (data.imported ? ' — ' + data.imported + ' records processed.' : ''));
+        loadSales();
+      } catch (err) {
+        setStatus(status, 'error', '❌ ' + err.message);
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    /* ── LOAD SALES ── */
+    async function loadSales() {
+      const tbody = document.getElementById('sales-body');
+      const countEl = document.getElementById('sales-count');
+      const totalEl = document.getElementById('sales-total');
+      tbody.innerHTML = '<tr><td colspan="6" class="empty">Loading…</td></tr>';
+      try {
+        const res = await fetch('/api/files/stream/sales');
+        const data = await res.json();
+        const rows = data.data ?? [];
+        countEl.textContent = rows.length;
+        const total = rows.reduce((s, r) => s + Number(r.amount ?? r.Amount ?? r.total ?? 0), 0);
+        totalEl.textContent = total ? '$' + total.toLocaleString(undefined, { maximumFractionDigits: 2 }) : '—';
+        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty">No sales yet — run the pipeline first</td></tr>'; return; }
+        tbody.innerHTML = rows.map((r, i) => {
+          const keys = Object.keys(r);
+          const id = r.id ?? r.ID ?? r[keys[0]] ?? '';
+          const prod = r.product ?? r.Product ?? r.name ?? r[keys[1]] ?? '';
+          const qty = r.quantity ?? r.Quantity ?? r.qty ?? r[keys[2]] ?? '';
+          const amt = r.amount ?? r.Amount ?? r.total ?? r[keys[3]] ?? '';
+          const date = r.date ?? r.Date ?? r[keys[4]] ?? '';
+          return `<tr><td>${i + 1}</td><td>${esc(id)}</td><td>${esc(prod)}</td><td>${esc(qty)}</td><td>${esc(String(amt))}</td><td>${esc(date)}</td></tr>`;
+        }).join('');
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="6" class="empty">Error: ' + err.message + '</td></tr>';
+      }
+    }
+
+    /* ── HELPERS ── */
+    function setStatus(el, type, msg) {
+      el.className = 'status-box ' + type;
+      el.textContent = msg;
+    }
+    function esc(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    /* ── V2 VIDEO CHALLENGE ── */
+    async function testV2() {
+      const pill = document.getElementById('v2-status');
+      const loadBtn = document.getElementById('load-v2-btn');
+      pill.className = 'v2-status-pill';
+      pill.textContent = '⏳ Testing…';
+      try {
+        const res = await fetch('/api/videos/stream-v2', { headers: { 'Range': 'bytes=0-' } });
+        if (res.status === 206) {
+          pill.className = 'v2-status-pill ready';
+          pill.textContent = '✅ 206 Partial Content — ready!';
+          loadBtn.disabled = false;
+        } else if (res.status === 501) {
+          pill.className = 'v2-status-pill';
+          pill.textContent = '🚧 501 — not implemented yet';
+          loadBtn.disabled = true;
+        } else {
+          pill.className = 'v2-status-pill error';
+          pill.textContent = '❌ HTTP ' + res.status;
+          loadBtn.disabled = true;
+        }
+      } catch (err) {
         pill.className = 'v2-status-pill error';
-        pill.textContent = '❌ HTTP ' + res.status;
+        pill.textContent = '❌ ' + err.message;
         loadBtn.disabled = true;
       }
-    } catch (err) {
-      pill.className = 'v2-status-pill error';
-      pill.textContent = '❌ ' + err.message;
-      loadBtn.disabled = true;
     }
-  }
 
-  function loadV2() {
-    const src = document.getElementById('video-v2-src');
-    const vid = document.getElementById('video-v2');
-    const wrap = document.getElementById('v2-wrap');
-    const placeholder = document.getElementById('v2-placeholder');
-    const pill = document.getElementById('v2-status');
+    function loadV2() {
+      const src = document.getElementById('video-v2-src');
+      const vid = document.getElementById('video-v2');
+      const wrap = document.getElementById('v2-wrap');
+      const placeholder = document.getElementById('v2-placeholder');
+      const pill = document.getElementById('v2-status');
 
-    src.src = '/api/videos/stream-v2';
-    vid.load();
-    wrap.style.display = 'block';
-    placeholder.style.display = 'none';
-    pill.className = 'v2-status-pill';
-    pill.textContent = '⏳ Loading…';
+      src.src = '/api/videos/stream-v2';
+      vid.load();
+      wrap.style.display = 'block';
+      placeholder.style.display = 'none';
+      pill.className = 'v2-status-pill';
+      pill.textContent = '⏳ Loading…';
 
-    vid.oncanplay = () => {
-      pill.className = 'v2-status-pill ready';
-      pill.textContent = '✅ Streaming!';
-      vid.play().catch(() => {});
-    };
-    vid.onerror = () => {
-      wrap.style.display = 'none';
-      placeholder.style.display = 'block';
-      pill.className = 'v2-status-pill error';
-      pill.textContent = '❌ Failed — check your implementation';
-    };
-  }
-</script>
+      vid.oncanplay = () => {
+        pill.className = 'v2-status-pill ready';
+        pill.textContent = '✅ Streaming!';
+        vid.play().catch(() => { });
+      };
+      vid.onerror = () => {
+        wrap.style.display = 'none';
+        placeholder.style.display = 'block';
+        pill.className = 'v2-status-pill error';
+        pill.textContent = '❌ Failed — check your implementation';
+      };
+    }
+  </script>
 </body>
+
 </html>
